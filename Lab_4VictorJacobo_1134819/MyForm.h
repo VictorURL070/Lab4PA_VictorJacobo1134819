@@ -1,4 +1,9 @@
 #pragma once
+#include "List.h"
+#include <cstdlib>
+#include <stdlib.h>
+#include <string>
+using namespace std;
 
 namespace Lab4VictorJacobo1134819 {
 
@@ -36,7 +41,8 @@ namespace Lab4VictorJacobo1134819 {
 		}
 	private: System::Windows::Forms::Label^ label1;
 	private: System::Windows::Forms::Button^ button1;
-	private: System::Windows::Forms::TextBox^ textBox1;
+	private: System::Windows::Forms::TextBox^ txtArea;
+
 	private: System::Windows::Forms::Label^ label2;
 	private: System::Windows::Forms::TextBox^ txtNextCard;
 	protected:
@@ -56,7 +62,7 @@ namespace Lab4VictorJacobo1134819 {
 		{
 			this->label1 = (gcnew System::Windows::Forms::Label());
 			this->button1 = (gcnew System::Windows::Forms::Button());
-			this->textBox1 = (gcnew System::Windows::Forms::TextBox());
+			this->txtArea = (gcnew System::Windows::Forms::TextBox());
 			this->label2 = (gcnew System::Windows::Forms::Label());
 			this->txtNextCard = (gcnew System::Windows::Forms::TextBox());
 			this->SuspendLayout();
@@ -79,13 +85,16 @@ namespace Lab4VictorJacobo1134819 {
 			this->button1->TabIndex = 1;
 			this->button1->Text = L"Empezar";
 			this->button1->UseVisualStyleBackColor = true;
+			this->button1->Click += gcnew System::EventHandler(this, &MyForm::button1_Click);
 			// 
-			// textBox1
+			// txtArea
 			// 
-			this->textBox1->Location = System::Drawing::Point(146, 180);
-			this->textBox1->Name = L"textBox1";
-			this->textBox1->Size = System::Drawing::Size(100, 22);
-			this->textBox1->TabIndex = 2;
+			this->txtArea->Location = System::Drawing::Point(68, 147);
+			this->txtArea->Multiline = true;
+			this->txtArea->Name = L"txtArea";
+			this->txtArea->Size = System::Drawing::Size(340, 143);
+			this->txtArea->TabIndex = 2;
+			this->txtArea->TextChanged += gcnew System::EventHandler(this, &MyForm::txtArea_TextChanged);
 			// 
 			// label2
 			// 
@@ -111,7 +120,7 @@ namespace Lab4VictorJacobo1134819 {
 			this->ClientSize = System::Drawing::Size(906, 477);
 			this->Controls->Add(this->txtNextCard);
 			this->Controls->Add(this->label2);
-			this->Controls->Add(this->textBox1);
+			this->Controls->Add(this->txtArea);
 			this->Controls->Add(this->button1);
 			this->Controls->Add(this->label1);
 			this->Name = L"MyForm";
@@ -120,8 +129,61 @@ namespace Lab4VictorJacobo1134819 {
 			this->PerformLayout();
 
 		}
+		static bool IsSorted(int* data, int count)
+		{
+			while (--count >= 1)
+				if (data[count] < data[count - 1]) return false;
+
+			return true;
+		}
+
+		static void Shuffle(int* data, int count)
+		{
+			int temp, rnd;
+
+			for (int i = 0; i < count; ++i)
+			{
+				rnd = rand() % count;
+				temp = data[i];
+				data[i] = data[rnd];
+				data[rnd] = temp;
+			}
+		}
+
+		static void BogoSort(int* data, int count)
+		{
+			while (!IsSorted(data, count))
+				Shuffle(data, count);
+		}
+
+		
+
 #pragma endregion
 	private: System::Void label1_Click(System::Object^ sender, System::EventArgs^ e) {
 	}
-	};
+
+		   
+	private: System::Void txtArea_TextChanged(System::Object^ sender, System::EventArgs^ e) {
+	}
+		   
+private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e) {
+
+	List Baraja = List();
+
+	int CartaN, CartaR;
+	int VRand;
+	int S;
+	int pos = 0;
+	int N[] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 };
+
+	BogoSort(N, 14);
+
+	for (S = 0; CartaN < 6; CartaN++)
+	{
+		Baraja.Add(N[pos]);
+		pos++;
+	}
+	txtNextCard->Text = Baraja.GetItem(0).ToString();
+}
+};
 }
