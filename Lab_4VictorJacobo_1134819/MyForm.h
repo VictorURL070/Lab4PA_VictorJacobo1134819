@@ -1,8 +1,12 @@
 #pragma once
 #include "List.h"
 #include <cstdlib>
+#include <ctime>
 #include <stdlib.h>
 #include <string>
+#include <stack>
+#include <iostream>
+
 using namespace std;
 
 namespace Lab4VictorJacobo1134819 {
@@ -156,7 +160,76 @@ namespace Lab4VictorJacobo1134819 {
 				Shuffle(data, count);
 		}
 
-		
+		string Baraja()
+		{
+			List Baraja = List();
+			stack<string> BarajaF;
+
+			int CartaN, CartaR;
+			int VRand;
+			int S, NR;
+			int pos = 0;
+			int N[] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 };
+
+
+			BogoSort(N, 14);
+
+			for (S = 0; NR < 52; NR++)
+			{
+				VRand = rand() % 10 + 1;
+
+				if (VRand < 6)
+				{
+					if (CartaN > 27) 
+					{
+						string num = to_string(N[pos]);
+						BarajaF.push("N" + num);
+						CartaN++;
+
+					}
+					else if (CartaR > 27)
+					{
+						string num = to_string(N[pos]);
+						BarajaF.push("R" + num);
+						CartaR++;
+					}
+				}
+				else 
+				{
+					if (CartaN > 27)
+					{
+						string num = to_string(N[pos]);
+						BarajaF.push("N" + num);
+						CartaN++;
+
+					}
+					else if (CartaR > 27)
+					{
+						string num = to_string(N[pos]);
+						BarajaF.push("R" + num);
+						CartaR++;
+					}
+				}
+				pos++;
+				if (pos == 14)
+				{
+					pos = 0;
+				}
+				
+			}
+			
+			string next = BarajaF.top();
+			BarajaF.pop();
+
+			return next;
+		}
+
+		string Nextcard(string next) 
+		{
+			string NextC = Baraja();
+
+			//txtNextCard->Text = NextC;
+		}
 
 #pragma endregion
 	private: System::Void label1_Click(System::Object^ sender, System::EventArgs^ e) {
@@ -168,22 +241,8 @@ namespace Lab4VictorJacobo1134819 {
 		   
 private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e) {
 
-	List Baraja = List();
-
-	int CartaN, CartaR;
-	int VRand;
-	int S;
-	int pos = 0;
-	int N[] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 };
-
-	BogoSort(N, 14);
-
-	for (S = 0; CartaN < 6; CartaN++)
-	{
-		Baraja.Add(N[pos]);
-		pos++;
-	}
-	txtNextCard->Text = Baraja.GetItem(0).ToString();
+	
+	//txtNextCard->Text = Baraja.GetItem(0).ToString();
 }
 };
 }
